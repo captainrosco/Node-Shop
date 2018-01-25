@@ -1,13 +1,37 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import HttpService from '../services/service';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import HttpService from "../services/service";
+import Product from "./components/product/product";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    http.getProducts();
+    this.state = { products: [] };
+    this.loadData = this.loadData.bind(this);
+    this.productList = this.product.bind(this);
+    this.loadData();
   }
+
+  loadData = () => {
+    let self = this;
+    http.getProducts().then(data => {
+      this.setState({products: data});
+    }, err => {});
+  };
+
+  productList = () => {
+    const list = this.state.products.map(product => {
+      <div className="col-sm-4" key={product._id}>
+        <Product
+          title={product.title}
+          price={product.price}
+          imgURL={product.imgURL}
+        />
+      </div>;
+    });
+    return list;
+  };
 
   render() {
     return (
@@ -16,9 +40,11 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className=" container App-main">
+         <div className="row">
+         {this.productList()}
+         </div>
+        </div>
       </div>
     );
   }
