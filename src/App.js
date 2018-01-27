@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import HttpService from "../services/service";
 import Product from "./components/product/product";
+import Wishilist from "./components/wishlist/wishlist";
 
 class App extends Component {
   constructor(props) {
@@ -15,9 +16,12 @@ class App extends Component {
 
   loadData = () => {
     let self = this;
-    http.getProducts().then(data => {
-      this.setState({products: data});
-    }, err => {});
+    http.getProducts().then(
+      data => {
+        this.setState({ products: data });
+      },
+      err => {}
+    );
   };
 
   productList = () => {
@@ -40,10 +44,15 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <div className=" container App-main">
-         <div className="row">
-         {this.productList()}
-         </div>
+        <div className="container-fluid App-main">
+          <div className="row">
+            <div className="row">
+              <div className="col-sm-8">{this.productList()}</div>
+            </div>
+            <div className="col-sm-4">
+              <Wishilist />
+            </div>
+          </div>
         </div>
       </div>
     );
